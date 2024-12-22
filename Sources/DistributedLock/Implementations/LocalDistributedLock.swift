@@ -1,7 +1,10 @@
+#if canImport(Foundation)
 import Foundation
 import Logging
 
-public struct FakeDistributedLock: DistributedLock {
+/// A distributed lock that is implemented using a local lock.
+/// This is useful for local development and testing.
+public struct LocalDistributedLock: DistributedLock {
 
     private let _lock = NSLock()
 
@@ -15,3 +18,4 @@ public struct FakeDistributedLock: DistributedLock {
         _lock.unlock()
     }
 }
+#endif
