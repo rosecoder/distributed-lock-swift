@@ -21,5 +21,9 @@ let package = Package(
                 .product(name: "Tracing", package: "swift-distributed-tracing"),
             ]
         ),
+        .testTarget(
+            name: "DistributedLockTests",
+            dependencies: ["DistributedLock"]
+        ),
     ]
 )
