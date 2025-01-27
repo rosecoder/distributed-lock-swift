@@ -4,13 +4,13 @@ import Logging
 /// This is useful for local development and testing.
 public struct NoOpDistributedLock: DistributedLock {
 
-    public init() {}
+  public init() {}
 
-    public func lock(key: String, logger: Logger) {
-        // No-op
-    }
+  public func lock(key: String, logger: Logger) {
+    // No-op
+  }
 
-    public func unlock(key: String, startedAt: ContinuousClock.Instant, logger: Logger) {
-        // No-op
-    }
+  public func unlock(key: String, startedAt: ContinuousClock.Instant, logger: Logger) {
+    // No-op
+  }
 }

@@ -4,10 +4,10 @@ import PackageDescription
 let package = Package(
     name: "distributed-lock",
     platforms: [
-        .macOS(.v15),
+        .macOS(.v15)
     ],
     products: [
-        .library(name: "DistributedLock", targets: ["DistributedLock"]),
+        .library(name: "DistributedLock", targets: ["DistributedLock"])
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-log.git", from: "1.4.2"),
