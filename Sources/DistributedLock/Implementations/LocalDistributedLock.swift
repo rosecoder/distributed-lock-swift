@@ -10,11 +10,11 @@
 
     public init() {}
 
-    public func lock(key: String, logger: Logger) {
+    public func lock(key: Key, logger: Logger) {
       _lock.lock()
     }
 
-    public func unlock(key: String, startedAt: ContinuousClock.Instant, logger: Logger) {
+    public func unlock(key: Key, startedAt: ContinuousClock.Instant, logger: Logger) {
       _lock.unlock()
     }
   }

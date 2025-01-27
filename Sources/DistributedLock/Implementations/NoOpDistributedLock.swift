@@ -6,11 +6,11 @@ public struct NoOpDistributedLock: DistributedLock {
 
   public init() {}
 
-  public func lock(key: String, logger: Logger) {
+  public func lock(key: Key, logger: Logger) {
     // No-op
   }
 
-  public func unlock(key: String, startedAt: ContinuousClock.Instant, logger: Logger) {
+  public func unlock(key: Key, startedAt: ContinuousClock.Instant, logger: Logger) {
     // No-op
   }
 }

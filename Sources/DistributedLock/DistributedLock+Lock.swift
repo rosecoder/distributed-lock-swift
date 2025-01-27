@@ -5,7 +5,7 @@ extension DistributedLock {
 
   @discardableResult
   public func withLock<Result: Sendable>(
-    _ key: String,
+    _ key: Key,
     isolation: isolated (any Actor)? = #isolation,
     operation: () async throws -> Result
   ) async throws -> Result {
@@ -14,7 +14,7 @@ extension DistributedLock {
     // Lock
     let start = ContinuousClock.Instant.now
     try await withSpan("lock-wait") { span in
-      span.attributes["key"] = key
+      span.attributes["key"] = key.rawValue
 
       try await lock(key: key, logger: logger)
     }

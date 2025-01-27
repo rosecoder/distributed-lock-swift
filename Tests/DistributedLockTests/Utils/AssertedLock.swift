@@ -13,12 +13,12 @@ final class AssertedLock<Lock: DistributedLock>: DistributedLock {
         self._lock = lock
     }
 
-    func lock(key: String, logger: Logger) async throws {
+    func lock(key: Key, logger: Logger) async throws {
         try await _lock.lock(key: key, logger: logger)
         _isLocked.withLock { $0 = true }
     }
 
-    func unlock(key: String, startedAt: ContinuousClock.Instant, logger: Logger) async throws {
+    func unlock(key: Key, startedAt: ContinuousClock.Instant, logger: Logger) async throws {
         _isLocked.withLock { $0 = false }
         try await _lock.unlock(key: key, startedAt: startedAt, logger: logger)
     }
