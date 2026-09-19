@@ -6,6 +6,7 @@ extension DistributedLock {
   @discardableResult
   public func withLock<Result: Sendable>(
     _ key: Key,
+    timeout: Duration = Self.defaultTimeout,
     isolation: isolated (any Actor)? = #isolation,
     operation: () async throws -> Result
   ) async throws -> Result {
@@ -16,14 +17,14 @@ extension DistributedLock {
     try await withSpan("lock-wait") { span in
       span.attributes["key"] = key.rawValue
 
-      try await lock(key: key, logger: logger)
+      try await lock(key: key, timeout: timeout, logger: logger)
     }
 
     // Unlock async after return
     defer {
       Task {
         do {
-          try await unlock(key: key, startedAt: start, logger: logger)
+          try await unlock(key: key, startedAt: start, timeout: timeout, logger: logger)
         } catch {
           logger.error(
             "Failed to unlock lock (\(key.rawValue)): \(error)"
@@ -39,6 +40,7 @@ extension DistributedLock {
   @discardableResult
   public func withLock<Result: Sendable>(
     _ keys: Set<Key>,
+    timeout: Duration = Self.defaultTimeout,
     isolation: isolated (any Actor)? = #isolation,
     operation: () async throws -> Result
   ) async throws -> Result {
@@ -52,7 +54,7 @@ extension DistributedLock {
           try await withSpan("lock-wait") { span in
             span.attributes["key"] = key.rawValue
 
-            try await lock(key: key, logger: logger)
+            try await lock(key: key, timeout: timeout, logger: logger)
           }
         }
       }
@@ -65,7 +67,7 @@ extension DistributedLock {
           for key in keys {
             group.addTask {
               do {
-                try await unlock(key: key, startedAt: start, logger: logger)
+                try await unlock(key: key, startedAt: start, timeout: timeout, logger: logger)
               } catch {
                 logger.error(
                   "Failed to unlock lock (\(key.rawValue)): \(error)"

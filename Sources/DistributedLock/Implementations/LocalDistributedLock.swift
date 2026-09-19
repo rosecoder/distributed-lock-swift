@@ -11,11 +11,16 @@
 
     public init() {}
 
-    public func lock(key: Key, logger: Logger) {
+    public func lock(key: Key, timeout: Duration, logger: Logger) {
       nsLock(key: key).lock()
     }
 
-    public func unlock(key: Key, startedAt: ContinuousClock.Instant, logger: Logger) {
+    public func unlock(
+      key: Key,
+      startedAt: ContinuousClock.Instant,
+      timeout: Duration,
+      logger: Logger
+    ) {
       nsLock(key: key).unlock()
     }
 

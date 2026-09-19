@@ -23,6 +23,31 @@ import Testing
         }
     }
 
+    @Test func shouldDefaultToThirtySeconds() async throws {
+        let lock = AssertedLock(lock: LocalDistributedLock())
+
+        try await lock.withLock("a") {}
+
+        #expect(lock.timeouts == [.seconds(30)])
+        #expect(LocalDistributedLock.defaultTimeout == .seconds(30))
+    }
+
+    @Test func shouldUseTheGivenTimeout() async throws {
+        let lock = AssertedLock(lock: LocalDistributedLock())
+
+        try await lock.withLock("a", timeout: .seconds(600)) {}
+
+        #expect(lock.timeouts == [.seconds(600)])
+    }
+
+    @Test func shouldUseTheGivenTimeoutForEveryKey() async throws {
+        let lock = AssertedLock(lock: LocalDistributedLock())
+
+        try await lock.withLock(["a", "b"], timeout: .seconds(600)) {}
+
+        #expect(lock.timeouts == [.seconds(600), .seconds(600)])
+    }
+
     @Test func shouldLockAndUnlockUsingMultipleKeys() async throws {
         let lock = AssertedLock(lock: LocalDistributedLock())
 
